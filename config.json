@@ -1,0 +1,60 @@
+{
+  "poll_note": "Feeds are checked every time monitor.py runs (GitHub Actions cron / launchd). max_items_per_run caps posts per topic per run so a burst never floods the channel.",
+  "max_items_per_run": 5,
+  "max_age_hours": 24,
+  "nitter_base": "https://nitter.net",
+  "topics": [
+    {
+      "name": "Queens & NYC Real Estate",
+      "webhook_env": "DISCORD_WEBHOOK_REALESTATE",
+      "feeds": [
+        "https://news.google.com/rss/search?q=%22Queens%22+real+estate+OR+housing&hl=en-US&gl=US&ceid=US:en",
+        "https://news.google.com/rss/search?q=NYC+housing+market&hl=en-US&gl=US&ceid=US:en",
+        "https://therealdeal.com/new-york/feed/"
+      ]
+    },
+    {
+      "name": "Mortgage Rates & Economy",
+      "webhook_env": "DISCORD_WEBHOOK_REALESTATE",
+      "feeds": [
+        "https://news.google.com/rss/search?q=mortgage+rates&hl=en-US&gl=US&ceid=US:en",
+        "https://news.google.com/rss/search?q=%22Federal+Reserve%22+interest+rates&hl=en-US&gl=US&ceid=US:en"
+      ]
+    },
+    {
+      "name": "Foreclosures & Distressed NY",
+      "webhook_env": "DISCORD_WEBHOOK_REALESTATE",
+      "feeds": [
+        "https://news.google.com/rss/search?q=New+York+foreclosure+OR+%22short+sale%22+OR+%22estate+sale%22&hl=en-US&gl=US&ceid=US:en"
+      ]
+    },
+    {
+      "name": "Breaking News",
+      "webhook_env": "DISCORD_WEBHOOK_NEWS",
+      "feeds": [
+        "https://news.google.com/rss?hl=en-US&gl=US&ceid=US:en",
+        "https://www.reddit.com/r/news/top/.rss?t=hour"
+      ]
+    },
+    {
+      "name": "X — News",
+      "webhook_env": "DISCORD_WEBHOOK_NEWS",
+      "x_accounts": ["CNN", "FoxNews"]
+    },
+    {
+      "name": "X — Sports & Knicks",
+      "webhook_env": "DISCORD_WEBHOOK_XSPORTS",
+      "x_accounts": ["ShamsCharania", "espn", "IanBegley", "TheNBACentral", "KnicksMuse", "nyknicks", "KingJames"]
+    },
+    {
+      "name": "X — Deals & Pokemon",
+      "webhook_env": "DISCORD_WEBHOOK_XDEALS",
+      "x_accounts": ["PokemonDealsTCG", "PokemonFindr", "PokemonRestocks", "riostoriches", "PriceErrors", "UniqloUSA"]
+    },
+    {
+      "name": "X — Culture",
+      "webhook_env": "DISCORD_WEBHOOK_XCULTURE",
+      "x_accounts": ["realDonaldTrump", "Nas", "kanyewest"]
+    }
+  ]
+}
