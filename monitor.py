@@ -135,38 +135,35 @@ def too_old(item: dict, max_age: timedelta) -> bool:
     return datetime.now(timezone.utc) - published > max_age
 
 
-def post_to_discord(webhook_url: str, topic: str, items: list) -> bool:
-    embeds = [
-        {
-            "title": item["title"][:250] or "(untitled)",
-            "url": item["link"],
-            "color": 0x1F6FEB,
-        }
-        for item in items
-    ]
-    payload = json.dumps({"content": f"**{topic}**", "embeds": embeds}).encode()
-    req = urllib.request.Request(
-        webhook_url,
-        data=payload,
-        headers={"Content-Type": "application/json", "User-Agent": USER_AGENT},
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=20):
-            return True
-    except urllib.error.HTTPError as e:
-        if e.code == 429:  # rate limited: wait once and retry
-            time.sleep(3)
+def post_to_discord(webhook_url: str, topic: str, items: list) -> int:
+    """Post one message per item so the phone notification shows the actual
+    tweet/headline text (Discord notifications display message content, not
+    embed titles). Returns how many items posted successfully."""
+    sent = 0
+    for item in items:
+        text = item["title"][:1800] or "(untitled)"
+        payload = json.dumps({"content": f"{text}\n{item['link']}"}).encode()
+        req = urllib.request.Request(
+            webhook_url,
+            data=payload,
+            headers={"Content-Type": "application/json", "User-Agent": USER_AGENT},
+        )
+        for attempt in (1, 2):
             try:
                 with urllib.request.urlopen(req, timeout=20):
-                    return True
-            except urllib.error.URLError as retry_err:
-                log(f"ERROR webhook retry failed: {retry_err}")
-                return False
-        log(f"ERROR webhook HTTP {e.code}: {e.read()[:200]!r}")
-        return False
-    except urllib.error.URLError as e:
-        log(f"ERROR webhook unreachable: {e}")
-        return False
+                    sent += 1
+                break
+            except urllib.error.HTTPError as e:
+                if e.code == 429 and attempt == 1:  # rate limited: wait and retry once
+                    time.sleep(3)
+                    continue
+                log(f"ERROR webhook HTTP {e.code}: {e.read()[:200]!r}")
+                break
+            except urllib.error.URLError as e:
+                log(f"ERROR webhook unreachable: {e}")
+                break
+        time.sleep(0.6)  # stay under Discord's webhook rate limit
+    return sent
 
 
 def run() -> int:
@@ -210,13 +207,13 @@ def run() -> int:
                 seen.append(key)
                 fresh.append(item)
 
-        fresh = fresh[:max_items]
+        fresh = fresh[: topic.get("max_items_per_run", max_items)]
         if not fresh:
             continue
-        if post_to_discord(webhook_url, topic["name"], fresh):
-            posted_total += len(fresh)
-            log(f"POSTED {len(fresh)} item(s) -> {topic['name']}")
-        time.sleep(1)  # be polite between webhook calls
+        sent = post_to_discord(webhook_url, topic["name"], fresh)
+        if sent:
+            posted_total += sent
+            log(f"POSTED {sent} item(s) -> {topic['name']}")
 
     save_seen(seen)
     log(f"DONE posted={posted_total}")

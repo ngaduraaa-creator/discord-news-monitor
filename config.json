@@ -37,24 +37,50 @@
       ]
     },
     {
-      "name": "X — News",
+      "name": "X \u2014 News",
       "webhook_env": "DISCORD_WEBHOOK_NEWS",
-      "x_accounts": ["CNN", "FoxNews"]
+      "x_accounts": [
+        "CNN",
+        "FoxNews"
+      ],
+      "max_items_per_run": 10
     },
     {
-      "name": "X — Sports & Knicks",
+      "name": "X \u2014 Sports & Knicks",
       "webhook_env": "DISCORD_WEBHOOK_XSPORTS",
-      "x_accounts": ["ShamsCharania", "espn", "IanBegley", "TheNBACentral", "KnicksMuse", "nyknicks", "KingJames"]
+      "x_accounts": [
+        "ShamsCharania",
+        "espn",
+        "IanBegley",
+        "TheNBACentral",
+        "KnicksMuse",
+        "nyknicks",
+        "KingJames"
+      ],
+      "max_items_per_run": 10
     },
     {
-      "name": "X — Deals & Pokemon",
+      "name": "X \u2014 Deals & Pokemon",
       "webhook_env": "DISCORD_WEBHOOK_XDEALS",
-      "x_accounts": ["PokemonDealsTCG", "PokemonFindr", "PokemonRestocks", "riostoriches", "PriceErrors", "UniqloUSA"]
+      "x_accounts": [
+        "PokemonDealsTCG",
+        "PokemonFindr",
+        "PokemonRestocks",
+        "riostoriches",
+        "PriceErrors",
+        "UniqloUSA"
+      ],
+      "max_items_per_run": 10
     },
     {
-      "name": "X — Culture",
+      "name": "X \u2014 Culture",
       "webhook_env": "DISCORD_WEBHOOK_XCULTURE",
-      "x_accounts": ["realDonaldTrump", "Nas", "kanyewest"]
+      "x_accounts": [
+        "realDonaldTrump",
+        "Nas",
+        "kanyewest"
+      ],
+      "max_items_per_run": 10
     }
   ]
 }
