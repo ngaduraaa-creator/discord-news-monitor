@@ -29,6 +29,17 @@
       ]
     },
     {
+      "name": "Seller Leads Intel (Project 2)",
+      "webhook_env": "DISCORD_WEBHOOK_REALESTATE",
+      "feeds": [
+        "https://www.reddit.com/r/RealEstateTechnology/top/.rss?t=day",
+        "https://www.reddit.com/r/realtors/top/.rss?t=day",
+        "https://www.reddit.com/r/RealEstate/search.rss?q=seller+OR+listing+leads&restrict_sr=1&sort=top&t=day",
+        "https://www.inman.com/feed/"
+      ],
+      "max_items_per_run": 5
+    },
+    {
       "name": "Breaking News",
       "webhook_env": "DISCORD_WEBHOOK_NEWS",
       "feeds": [
